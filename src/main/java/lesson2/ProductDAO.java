@@ -408,6 +408,8 @@ public class ProductDAO {
         return results;
     }
 
+
+
     //public static void
 
     public static SessionFactory createSessionFactory() {

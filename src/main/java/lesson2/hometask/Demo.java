@@ -11,7 +11,7 @@ public class Demo {
         product.setDescription("grey&blue");
         product.setPrice(70);
 
-        productDAO.save(product);
+        //productDAO.save(product);
 
         //System.out.println(productDAO.findById(6));
     }
