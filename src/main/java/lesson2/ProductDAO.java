@@ -289,7 +289,7 @@ public class ProductDAO {
             tr = session.getTransaction();
             tr.begin();
 
-            results = session.createQuery("SELECT * FROM PRODUCT PRICE BETWEEN ? AND ?")
+            results = session.createQuery("SELECT * FROM PRODUCT WHERE PRICE BETWEEN ? AND ?")
                     .setInteger(0, price - delta)
                     .setInteger(1, price + delta)
                     .list();
@@ -322,7 +322,7 @@ public class ProductDAO {
             tr = session.getTransaction();
             tr.begin();
 
-            results = session.createQuery("SELECT * FROM PRODUCT NAME = ? ORDER BY NAME ASC")
+            results = session.createQuery("SELECT * FROM PRODUCT WHERE NAME = ? ORDER BY NAME ASC")
                     .setString(0, name).list();
 
             tr.commit();
@@ -353,7 +353,7 @@ public class ProductDAO {
             tr = session.getTransaction();
             tr.begin();
 
-            results = session.createQuery("SELECT * FROM PRODUCT NAME = ? ORDER BY NAME DESC")
+            results = session.createQuery("SELECT * FROM PRODUCT WHERE NAME = ? ORDER BY NAME DESC")
                     .setString(0, name).list();
 
 
@@ -385,7 +385,7 @@ public class ProductDAO {
             tr = session.getTransaction();
             tr.begin();
 
-            results = session.createQuery("SELECT * FROM PRODUCT PRICE BETWEEN ? AND ? ORDER BY PRICE DESC")
+            results = session.createQuery("SELECT * FROM PRODUCT WHERE PRICE BETWEEN ? AND ? ORDER BY PRICE DESC")
                     .setInteger(0, price - delta)
                     .setInteger(1, price + delta)
                     .list();
