@@ -1,3 +1,5 @@
+package lesson2;
+
 import javax.persistence.*;
 
 @Entity
@@ -49,7 +51,7 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Product{" +
+        return "lesson2.Product{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +

@@ -1,8 +1,9 @@
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
+package lesson2;
+
+import org.hibernate.*;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.query.Query;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +42,7 @@ public class ProductDAO {
         System.out.println("Save is done");
     }
 
-    public static void updateAll(List<Product> products){
+    public static void updateAll(List<Product> products) {
         Session session = null;
         Transaction tr = null;
 
@@ -71,7 +72,7 @@ public class ProductDAO {
         System.out.println("Update is done");
     }
 
-    public static void deleteAll(List<Product> products){
+    public static void deleteAll(List<Product> products) {
         Session session = null;
         Transaction tr = null;
 
@@ -130,7 +131,7 @@ public class ProductDAO {
         System.out.println("Save is done");
     }
 
-    public static void update(Product product){
+    public static void update(Product product) {
         Session session = null;
         Transaction tr = null;
 
@@ -159,7 +160,7 @@ public class ProductDAO {
         System.out.println("Update is done");
     }
 
-    public static void delete(Product product){
+    public static void delete(Product product) {
         Session session = null;
         Transaction tr = null;
 
@@ -188,12 +189,12 @@ public class ProductDAO {
         System.out.println("Delete is done");
     }
 
-    public static Product findById(long id){
+    public static Product findById(long id) {
         Session session = null;
         Transaction tr = null;
         Product product = new Product();
 
-        try{
+        try {
             session = createSessionFactory().openSession();
             tr = session.getTransaction();
             tr.begin();
@@ -217,17 +218,19 @@ public class ProductDAO {
         return product;
     }
 
-    public static ArrayList<Product> findByName(String name){
+    public static ArrayList<Product> findByName(String name) {
         Session session = null;
         Transaction tr = null;
         ArrayList<Product> products = new ArrayList<>();
 
-        try{
+        try {
             session = createSessionFactory().openSession();
             tr = session.getTransaction();
             tr.begin();
 
-            products.add(session.get(Product.class, name));
+            Query query = sessionFactory.getCurrentSession().createQuery("from Product where name=:name");
+            query.setParameter("name", name);
+            products.add((Product) query.uniqueResult());
 
             tr.commit();
         } catch (HibernateException e) {
@@ -244,6 +247,165 @@ public class ProductDAO {
         System.out.println("Find is done");
 
         return products;
+    }
+
+    public static List findByContainedName(String name) {
+        Session session = null;
+        Transaction tr = null;
+        Criteria criteria = null;
+
+        try {
+            session = createSessionFactory().openSession();
+            tr = session.getTransaction();
+            tr.begin();
+
+            criteria = session.createCriteria(Product.class)
+                    .add(Restrictions.like("NAME", "%" + name + "%"));
+
+            tr.commit();
+        } catch (HibernateException e) {
+            System.err.println("Find is failed");
+            System.out.println(e.getMessage());
+
+            if (tr != null)
+                tr.rollback();
+        } finally {
+            if (session != null)
+                session.close();
+        }
+
+        System.out.println("Find is done");
+
+        return criteria.list();
+    }
+
+    public static List findByPrice(int price, int delta) {
+        Session session = null;
+        Transaction tr = null;
+        List results = null;
+
+        try {
+            session = createSessionFactory().openSession();
+            tr = session.getTransaction();
+            tr.begin();
+
+            results = session.createQuery("SELECT * FROM PRODUCT PRICE BETWEEN ? AND ?")
+                    .setInteger(0, price - delta)
+                    .setInteger(1, price + delta)
+                    .list();
+
+            tr.commit();
+        } catch (HibernateException e) {
+            System.err.println("Find is failed");
+            System.out.println(e.getMessage());
+
+            if (tr != null)
+                tr.rollback();
+        } finally {
+            if (session != null)
+                session.close();
+        }
+
+        System.out.println("Find is done");
+
+        return results;
+    }
+
+    public static List findByNameSortedAsc(String name) {
+        Session session = null;
+        Transaction tr = null;
+        List results = null;
+
+
+        try {
+            session = createSessionFactory().openSession();
+            tr = session.getTransaction();
+            tr.begin();
+
+            results = session.createQuery("SELECT * FROM PRODUCT NAME = ? ORDER BY NAME ASC")
+                    .setString(0, name).list();
+
+            tr.commit();
+        } catch (HibernateException e) {
+            System.err.println("Find is failed");
+            System.out.println(e.getMessage());
+
+            if (tr != null)
+                tr.rollback();
+        } finally {
+            if (session != null)
+                session.close();
+        }
+
+        System.out.println("Find is done");
+
+        return results;
+    }
+
+    public static List findByNameSortedDesc(String name) {
+        Session session = null;
+        Transaction tr = null;
+        List results = null;
+
+
+        try {
+            session = createSessionFactory().openSession();
+            tr = session.getTransaction();
+            tr.begin();
+
+            results = session.createQuery("SELECT * FROM PRODUCT NAME = ? ORDER BY NAME DESC")
+                    .setString(0, name).list();
+
+
+            tr.commit();
+        } catch (HibernateException e) {
+            System.err.println("Find is failed");
+            System.out.println(e.getMessage());
+
+            if (tr != null)
+                tr.rollback();
+        } finally {
+            if (session != null)
+                session.close();
+        }
+
+        System.out.println("Find is done");
+
+        return results;
+    }
+
+    public static List findByPriceSortedDesc(int price, int delta) {
+        Session session = null;
+        Transaction tr = null;
+        List results = null;
+
+
+        try {
+            session = createSessionFactory().openSession();
+            tr = session.getTransaction();
+            tr.begin();
+
+            results = session.createQuery("SELECT * FROM PRODUCT PRICE BETWEEN ? AND ? ORDER BY PRICE DESC")
+                    .setInteger(0, price - delta)
+                    .setInteger(1, price + delta)
+                    .list();
+
+
+            tr.commit();
+        } catch (HibernateException e) {
+            System.err.println("Find is failed");
+            System.out.println(e.getMessage());
+
+            if (tr != null)
+                tr.rollback();
+        } finally {
+            if (session != null)
+                session.close();
+        }
+
+        System.out.println("Find is done");
+
+        return results;
     }
 
     //public static void
