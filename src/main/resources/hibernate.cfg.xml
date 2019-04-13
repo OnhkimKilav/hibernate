@@ -9,6 +9,8 @@
         <property name="hibernate.connection.username">main</property>
         <property name="hibernate.connection.password">001039786</property>
         <!--<mapping class="hibernate.lesson1.lesson2.Product"></mapping>-->
-        <mapping class="hibernate.lesson2.Product"></mapping>
+        <!--<mapping class="hibernate.lesson2.Product"></mapping>-->
+        <mapping class="hibernate.lesson3.Hotel"></mapping>
+        <mapping class="hibernate.lesson3.Room"></mapping>
     </session-factory>
 </hibernate-configuration>
