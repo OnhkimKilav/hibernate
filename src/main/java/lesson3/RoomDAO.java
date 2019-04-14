@@ -71,7 +71,7 @@ public class RoomDAO {
         System.out.println("Update is done");
     }
 
-    public static void delete(Room room) {
+    public static void delete(long id) {
         Session session = null;
         Transaction tr = null;
 
@@ -82,7 +82,7 @@ public class RoomDAO {
             tr.begin();
 
             //action
-            session.delete(room);
+            session.delete(session.get(Room.class, id));
 
             //close session/tr
             tr.commit();
@@ -100,10 +100,10 @@ public class RoomDAO {
         System.out.println("Delete is done");
     }
 
-    public static List read() {
+    public static Room findById(long id) {
         Session session = null;
         Transaction tr = null;
-        List results = null;
+        Room room = null;
 
         try {
             //create session/tr
@@ -112,7 +112,7 @@ public class RoomDAO {
             tr.begin();
 
             //action
-            results = session.createQuery("SELECT * FROM ROOM").list();
+            room = session.get(Room.class, id);
 
             //close session/tr
             tr.commit();
@@ -129,7 +129,7 @@ public class RoomDAO {
 
         System.out.println("Read is done");
 
-        return results;
+        return room;
     }
 
     public static SessionFactory createSessionFactory() {

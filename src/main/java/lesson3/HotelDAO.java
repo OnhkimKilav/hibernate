@@ -71,7 +71,7 @@ public class HotelDAO {
         System.out.println("Update is done");
     }
 
-    public static void delete(Hotel hotel) {
+    public static void delete(long id) {
         Session session = null;
         Transaction tr = null;
 
@@ -82,7 +82,7 @@ public class HotelDAO {
             tr.begin();
 
             //action
-            session.delete(hotel);
+            session.delete(session.get(Hotel.class, id));
 
             //close session/tr
             tr.commit();
@@ -100,10 +100,10 @@ public class HotelDAO {
         System.out.println("Delete is done");
     }
 
-    public static List read() {
+    public static Hotel findById(long id) {
         Session session = null;
         Transaction tr = null;
-        List results = null;
+        Hotel hotel = null;
 
         try {
             //create session/tr
@@ -112,7 +112,7 @@ public class HotelDAO {
             tr.begin();
 
             //action
-            results = session.createQuery("SELECT * FROM HOTEL").list();
+            hotel = session.get(Hotel.class, id);
 
             //close session/tr
             tr.commit();
@@ -129,7 +129,7 @@ public class HotelDAO {
 
         System.out.println("Read is done");
 
-        return results;
+        return hotel;
     }
 
     public static SessionFactory createSessionFactory() {
