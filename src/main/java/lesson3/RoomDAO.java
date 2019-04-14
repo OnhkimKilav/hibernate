@@ -1,13 +1,11 @@
 package lesson3;
 
-import lesson2.Product;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
-import java.util.List;
 
 public class RoomDAO {
 
