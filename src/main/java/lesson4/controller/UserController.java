@@ -1,6 +1,7 @@
 package lesson4.controller;
 
 import lesson4.model.User;
+import lesson4.service.UserService;
 
 public class UserController {
     private UserService userService = new UserService();

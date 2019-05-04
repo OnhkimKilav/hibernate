@@ -2,22 +2,17 @@ package lesson4.DAO;
 
 import lesson4.model.Filter;
 import lesson4.model.Room;
-import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.Query;
-
-import javax.persistence.EntityManager;
 import javax.persistence.criteria.*;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.EntityManagerFactory;
 
 public class RoomDAO extends GeneralDAO<Room> {
-    protected RoomDAO(Class<Room> clazz) {
-        super(clazz);
+    public RoomDAO(){
+        super(Room.class);
     }
 
     public List<Room> findRooms(Filter filter) {

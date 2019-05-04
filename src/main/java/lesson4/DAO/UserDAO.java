@@ -10,8 +10,8 @@ import java.util.List;
 
 public class UserDAO extends GeneralDAO {
 
-    protected UserDAO(Class clazz) {
-        super(clazz);
+    public UserDAO(){
+        super(User.class);
     }
 
     public User registerUser(User user){

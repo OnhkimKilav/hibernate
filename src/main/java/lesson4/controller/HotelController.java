@@ -1,6 +1,7 @@
 package lesson4.controller;
 
 import lesson4.model.Hotel;
+import lesson4.service.HotelService;
 
 import java.util.ArrayList;
 
