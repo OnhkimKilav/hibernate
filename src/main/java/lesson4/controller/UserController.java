@@ -9,15 +9,15 @@ public class UserController {
     public UserController() throws Exception {
     }
 
-    public User registerUser(User user) throws Exception {
-        return userService.registerUser(user);
+    public void registerUser(User user) throws Exception {
+        userService.registerUser(user);
     }
 
-    public void logIn(String userName, String password) throws Exception {
+    /*public void logIn(String userName, String password) throws Exception {
         userService.logIn(userName, password);
     }
 
     public void logOut(){
         userService.logOut();
-    }
+    }*/
 }

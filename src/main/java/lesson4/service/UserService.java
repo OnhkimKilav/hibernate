@@ -9,26 +9,14 @@ import lesson4.model.User;
 public class UserService {
     private UserDAO userDAO = new UserDAO();
 
-    public UserService() throws Exception {
+    public UserService() {
     }
 
-    public User registerUser(User user) throws Exception {
+    public void registerUser(User user) {
         //check business logic
         //нет пустых значений
 
-        for(User user1 : userDAO.registerUser(user)){
-
-        }
-
-        return userDAO.registerUser(user);
-    }
-
-    public User findUserById(Long id) throws Exception {
-        for (User user : userDAO.listUser()) {
-            if (user.getId() == id)
-                return user;
-        }
-        throw new NoSuchFieldError("User " + id + " don't found");
+        userDAO.registerUser(user);
     }
 
     /*public void logIn(String userName, String password) throws Exception {
@@ -57,10 +45,4 @@ public class UserService {
         if (logInUser != null)
             logInUser = null;
     }*/
-
-    private void checkUserName(String userName) throws Exception {
-        for (User user : userDAO.listUser())
-            if (user.getUserName().equals(userName))
-                throw new UserNotRegisterException(userName + " already in use. Use a different name");
-    }
 }

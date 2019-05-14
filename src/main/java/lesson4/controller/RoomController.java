@@ -4,6 +4,7 @@ import lesson4.model.Filter;
 import lesson4.model.Room;
 import lesson4.service.RoomService;
 
+import java.util.Date;
 import java.util.List;
 
 public class RoomController {
@@ -16,8 +17,8 @@ public class RoomController {
         return roomService.findRoom(filter);
     }
 
-    public void bookRoom(long roomId, long userId, long hotelId) throws Exception {
-        roomService.bookRoom(roomId, userId, hotelId);
+    public void bookRoom(long roomId, long userId, Date dateFrom, Date dateTo) throws Exception {
+        roomService.bookRoom(roomId, userId, dateFrom, dateTo);
     }
 
     public void cancelReservation(long roomId, long userId) throws Exception {
