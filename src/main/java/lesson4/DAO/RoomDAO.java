@@ -16,12 +16,11 @@ public class RoomDAO extends GeneralDAO<Room> {
     }
 
     public List<Room> findRooms(Filter filter) {
-        Session session = null;
         Transaction tr = null;
         List<Room> result = null;
 
-        try {
-            session = createSessionFactory().openSession();
+        try(Session session = createSessionFactory().openSession()) {
+
             tr = session.getTransaction();
             tr.begin();
 
@@ -53,9 +52,6 @@ public class RoomDAO extends GeneralDAO<Room> {
 
             if (tr != null)
                 tr.rollback();
-        } finally {
-            if (session != null)
-                session.close();
         }
 
         System.out.println("Book is done");
@@ -64,20 +60,23 @@ public class RoomDAO extends GeneralDAO<Room> {
     }
 
     public void bookRoom(long roomId, long userId, Date dateFrom, Date dateTo) throws Exception {
-        Session session = null;
         Transaction tr = null;
 
-        try {
-            session = createSessionFactory().openSession();
+        try(Session session = createSessionFactory().openSession()) {
+
             tr = session.getTransaction();
             tr.begin();
 
-            Room room = session.load(Room.class, roomId);
+            Room room = findById(roomId, Room.class);
+
 
             if (room.getDateAvailableFrom().before(dateFrom) || room.getDateAvailableFrom().equals(dateFrom)) {
                 room.setDateAvailableFrom(dateTo);
                 session.update(room);
             } else throw new Exception("Sorry, booking a room is impossible.");
+
+            OrderDAO orderDAO = new OrderDAO();
+            orderDAO.save(createOrder(room ,dateFrom, dateTo, room.getPrice()));
 
             tr.commit();
         } catch (HibernateException e) {
@@ -86,20 +85,15 @@ public class RoomDAO extends GeneralDAO<Room> {
 
             if (tr != null)
                 tr.rollback();
-        } finally {
-            if (session != null)
-                session.close();
         }
-
         System.out.println("Book is done");
     }
 
     public void cancelReservation(long roomId, long userId) {
-        Session session = null;
         Transaction tr = null;
 
-        try {
-            session = createSessionFactory().openSession();
+        try(Session session = createSessionFactory().openSession()) {
+
             tr = session.getTransaction();
             tr.begin();
 
@@ -108,6 +102,9 @@ public class RoomDAO extends GeneralDAO<Room> {
             room.setDateAvailableFrom(new Date());
             session.update(room);
 
+            OrderDAO orderDAO = new OrderDAO();
+            orderDAO.update(createOrder(room ,new Date(), new Date(), room.getPrice()));
+
             tr.commit();
         } catch (HibernateException e) {
             System.err.println("Cancel is failed");
@@ -115,11 +112,17 @@ public class RoomDAO extends GeneralDAO<Room> {
 
             if (tr != null)
                 tr.rollback();
-        } finally {
-            if (session != null)
-                session.close();
         }
 
         System.out.println("Cancel is done");
+    }
+
+    private lesson4.model.Order createOrder(Room room, Date dateFrom, Date dateTo, double moneyPaid){
+        lesson4.model.Order order = new lesson4.model.Order();
+        order.setRoom(room);
+        order.setDateFrom(dateFrom);
+        order.setDateTo(dateTo);
+        order.setMoneyPaid(moneyPaid);
+        return order;
     }
 }

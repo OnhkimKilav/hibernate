@@ -17,12 +17,10 @@ public abstract class GeneralDAO<T> implements interfaceGeneralDAO<T> {
     }
 
     public void save(T t) {
-        Session session = null;
         Transaction tr = null;
 
-        try {
+        try(Session session = createSessionFactory().openSession()) {
             //create session/tr
-            session = createSessionFactory().openSession();
             tr = session.getTransaction();
             tr.begin();
 
@@ -37,21 +35,17 @@ public abstract class GeneralDAO<T> implements interfaceGeneralDAO<T> {
 
             if (tr != null)
                 tr.rollback();
-        } finally {
-            if (session != null)
-                session.close();
         }
 
         System.out.println("Save is done");
     }
 
     public void update(T t) {
-        Session session = null;
         Transaction tr = null;
 
-        try {
+        try(Session session = createSessionFactory().openSession()) {
             //create session/tr
-            session = createSessionFactory().openSession();
+
             tr = session.getTransaction();
             tr.begin();
 
@@ -66,21 +60,17 @@ public abstract class GeneralDAO<T> implements interfaceGeneralDAO<T> {
 
             if (tr != null)
                 tr.rollback();
-        } finally {
-            if (session != null)
-                session.close();
         }
 
         System.out.println("Update is done");
     }
 
     public void delete(T t) {
-        Session session = null;
         Transaction tr = null;
 
-        try {
+        try(Session session = createSessionFactory().openSession()) {
             //create session/tr
-            session = createSessionFactory().openSession();
+
             tr = session.getTransaction();
             tr.begin();
 
@@ -95,22 +85,17 @@ public abstract class GeneralDAO<T> implements interfaceGeneralDAO<T> {
 
             if (tr != null)
                 tr.rollback();
-        } finally {
-            if (session != null)
-                session.close();
         }
-
         System.out.println("Delete is done");
     }
 
     public T findById(long id, Class<T> clazz) {
-        Session session = null;
         Transaction tr = null;
         T entity = null;
 
-        try {
+        try(Session session = createSessionFactory().openSession()) {
             //create session/tr
-            session = createSessionFactory().openSession();
+
             tr = session.getTransaction();
             tr.begin();
 
@@ -125,9 +110,6 @@ public abstract class GeneralDAO<T> implements interfaceGeneralDAO<T> {
 
             if (tr != null)
                 tr.rollback();
-        } finally {
-            if (session != null)
-                session.close();
         }
 
         System.out.println("Read is done");

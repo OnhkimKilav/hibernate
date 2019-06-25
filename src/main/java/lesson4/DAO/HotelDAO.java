@@ -14,12 +14,10 @@ public class HotelDAO extends GeneralDAO<Hotel>{
     }
 
     public List<Hotel> findHotelByName(String name){
-        Session session = null;
         Transaction tr = null;
         List hotels = null;
 
-        try {
-            session = createSessionFactory().openSession();
+        try(Session session = createSessionFactory().openSession()) {
             tr = session.getTransaction();
             tr.begin();
 
@@ -33,9 +31,6 @@ public class HotelDAO extends GeneralDAO<Hotel>{
 
             if (tr != null)
                 tr.rollback();
-        } finally {
-            if (session != null)
-                session.close();
         }
 
         System.out.println("Find is done");
@@ -44,12 +39,11 @@ public class HotelDAO extends GeneralDAO<Hotel>{
     }
 
     public List<Hotel> findHotelByCity(String city){
-        Session session = null;
         Transaction tr = null;
         List hotels = null;
 
-        try {
-            session = createSessionFactory().openSession();
+        try(Session session = createSessionFactory().openSession()) {
+
             tr = session.getTransaction();
             tr.begin();
 
@@ -63,9 +57,6 @@ public class HotelDAO extends GeneralDAO<Hotel>{
 
             if (tr != null)
                 tr.rollback();
-        } finally {
-            if (session != null)
-                session.close();
         }
 
         System.out.println("Find is done");

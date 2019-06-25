@@ -14,12 +14,10 @@ public class UserDAO extends GeneralDAO {
         super(User.class);
     }
 
-    public User registerUser(User user){
-        Session session = null;
+    public void registerUser(User user){
         Transaction tr = null;
 
-        try {
-            session = createSessionFactory().openSession();
+        try (Session session = createSessionFactory().openSession();){
             tr = session.getTransaction();
             tr.begin();
 
@@ -32,22 +30,17 @@ public class UserDAO extends GeneralDAO {
 
             if (tr != null)
                 tr.rollback();
-        } finally {
-            if (session != null)
-                session.close();
         }
 
         System.out.println("Register is done");
 
-        return session.load(User.class, user.getId());
     }
 
     public void login (String userName, String password){
-        Session session = null;
         Transaction tr = null;
 
-        try {
-            session = createSessionFactory().openSession();
+        try(Session session = createSessionFactory().openSession();) {
+
             tr = session.getTransaction();
             tr.begin();
 
@@ -67,9 +60,6 @@ public class UserDAO extends GeneralDAO {
 
             if (tr != null)
                 tr.rollback();
-        } finally {
-            if (session != null)
-                session.close();
         }
 
         System.out.println("Register is done");
